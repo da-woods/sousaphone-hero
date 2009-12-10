@@ -4,11 +4,21 @@
 			    |     David Woods     |
 			    -----------------------
 
+Note:
+-----
+
+Inspired by http://www.theonion.com/content/news/activision_reports_sluggish_sales
+
 Requirements:
 -------------
 
-SDL and SDL-mixer libraries (provided)
-OpenGL 1.0
+SDL and SDL-mixer libraries (provided as windows dlls for windows versions)
+OpenGL
+
+Building:
+---------
+
+Type make in the src directory. Binaries will be copied to this directory.
 
 Controls:
 ---------
@@ -18,6 +28,8 @@ The keys 'a', 's' and 'd' or the left, middle and right mouse buttons should map
 Instructions telling the player what to play will scroll across the top of the screen. The note should be played when it reaches the centre of the screen, indicated by the yellowy gradient.
 
 Points are awarded for notes correctly played. Points are deduced for notes played at the wrong time, extra notes, incorrect notes and notes not played.
+
+A version of Twinkle Twinkle Little Start is included (twinkle.txt). To play it either drag it onto the executable or run the executable with twinkle.txt as the argument.
 
 Editable Files:
 ---------------
