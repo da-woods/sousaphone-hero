@@ -5,6 +5,7 @@
 
 // std includes
 #include <algorithm>
+#include <string>
 
 #include "SDL_mixer.h"
 

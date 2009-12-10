@@ -1,7 +1,9 @@
 CPP  = g++
 OBJ  = main.o wavegeneration.o notes.o keys.o graphics.o general.o tune.o score.o
 LINKOBJ  = $(OBJ)
-LIBS =  -lSDLmain -lSDL -lSDL_mixer -lGL -lGLU -s
+GL = GL
+LINK_PATHS = 
+LIBS =  -L$(LINK_PATHS) -lSDLmain -lSDL -lSDL_mixer -l$(GL) -lGLU -s
 INCS =  -I/usr/include -I/usr/include/SDL
 BIN  = shero
 CXXFLAGS = $(INCS)   
@@ -14,7 +16,8 @@ all: all-before $(BIN) all-after
 
 
 clean: clean-custom
-	${RM} $(OBJ) $(BIN)
+	$(RM) $(OBJ) $(BIN)
+	$(RM) ../$(BIN) 
 
 $(BIN): $(OBJ)
 	$(CPP) $(LINKOBJ) -o $(BIN) $(LIBS)
