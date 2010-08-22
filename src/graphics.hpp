@@ -37,7 +37,7 @@ const unsigned short X_RESOLUTION = 800;
 const unsigned short Y_RESOLUTION = 600;
 const unsigned short COLOUR_DEPTH = 24; // bits
 
-void setupGraphics();
+void setupGraphics(bool loadShaders = true);
 
 void cleanupGraphics();
 
@@ -47,6 +47,8 @@ void draw(const double noteFraction); // draws all the components but doesn't fl
 void drawBackground();
 
 void drawMan();
+
+void toggleShaders();
 
 enum AnchorPosition { BOTTOM_LEFT, BOTTOM_RIGHT, TOP_LEFT, TOP_RIGHT };
 

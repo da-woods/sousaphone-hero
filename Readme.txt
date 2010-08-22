@@ -31,6 +31,8 @@ Points are awarded for notes correctly played. Points are deduced for notes play
 
 A version of Twinkle Twinkle Little Start is included (twinkle.txt). To play it either drag it onto the executable or run the executable with twinkle.txt as the argument.
 
+'t' toggles fragment and vertex shaders (may make it work faster on slower computers). If 't' isn't viable, the commandline option --no-shaders may work better (this even skips loading them).
+
 Editable Files:
 ---------------
 

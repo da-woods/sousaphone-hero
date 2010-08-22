@@ -42,6 +42,8 @@ namespace graphics {
 // the screen
 SDL_Surface* screen = 0;
 
+bool shadersActive = true;
+
 const double DRAW_DEPTH = -0.5;
 
 GLuint crowdTexture = 0, 
@@ -81,7 +83,7 @@ PFNGLDELETEPROGRAMPROC fpglDeleteProgram = 0;
 
 // relating to points
 
-bool shadersEnabled = false; // start true, make false
+bool shadersViable = false; // start true, make false
 bool pointSpritesEnabled = false;
 
 
@@ -153,7 +155,7 @@ void getGLFunctions()
                                                       // the function pointers unmodified!
    //std::cout << "sizeof(GLuint) == sizeof(GLhandleARB): " << (sizeof(GLuint) == sizeof(GLhandleARB)) << "\n";
 
-   shadersEnabled = fpglCreateShader && fpglCreateProgram && fpglShaderSource && fpglCompileShader && fpglGetShaderiv &&
+   shadersViable = fpglCreateShader && fpglCreateProgram && fpglShaderSource && fpglCompileShader && fpglGetShaderiv &&
                         fpglGetShaderInfoLog && fpglAttachShader && fpglLinkProgram && fpglGetProgramiv && fpglGetProgramInfoLog
                         && fpglUseProgram && fpglGetUniformLocation && fpglUniform1fv && fpglUniform4fv 
                         && fpglUniform1f && fpglUniform2f && fpglUniform1i && fpglValidateProgram && fpglDeleteShader && fpglDeleteProgram
@@ -279,7 +281,7 @@ void loadTextures()
 
 GLuint loadShaderModule(const std::string& filename, const GLenum type, const bool outputDebugInfo = false)
 {
-   if (!shadersEnabled)
+   if (!shadersViable)
       return 0;
 
    const GLuint moduleName = fpglCreateShader(type);
@@ -329,7 +331,7 @@ GLuint loadShaderModule(const std::string& filename, const GLenum type, const bo
 
 GLuint makeShaderProgram(const std::vector<GLuint>& modules, const bool outputDebugInfo = false)
 {
-   if (!shadersEnabled)
+   if (!shadersViable)
       return 0;
 
    const GLuint programName = fpglCreateProgram();
@@ -405,7 +407,7 @@ void loadShaders()
 
 double aspectRatio() { return static_cast<double>(Y_RESOLUTION)/static_cast<double>(X_RESOLUTION); }
 
-void setupGraphics()
+void setupGraphics(bool doLoadShaders)
 {
    // assumes SDL is already initialised
    SDL_GL_SetAttribute( SDL_GL_DEPTH_SIZE, COLOUR_DEPTH );
@@ -435,7 +437,8 @@ void setupGraphics()
    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
    loadTextures();
-   loadShaders(); // does nothing if shader's aren't available
+   if (doLoadShaders)
+     loadShaders(); // does nothing if shader's aren't available
 
    glClear(GL_COLOR_BUFFER_BIT);
    updateScreen();
@@ -512,7 +515,7 @@ void drawBackground()
                                     -2.0, HEIGHT, DRAW_DEPTH,
                                     -2.0, -HEIGHT, DRAW_DEPTH };
 
-   if (shadersEnabled)
+   if (shadersViable && shadersActive)
    {
       static const GLint timeUni = fpglGetUniformLocation(soundWaveShader, "time");
       static const GLint textureSampler = fpglGetUniformLocation(soundWaveShader, "texture");
@@ -542,7 +545,7 @@ void drawBackground()
    glEnable(GL_BLEND);
 
 
-   if (shadersEnabled)
+   if (shadersViable) // this just turns them off, so doesn't matter if it's off
    {
       fpglUseProgram(0);
    }
@@ -809,7 +812,7 @@ void writeNumber(const signed int number, const double x, const double y,
 
 void drawInsects()
 {
-   if (!(pointSpritesEnabled && shadersEnabled))
+   if (!(pointSpritesEnabled && shadersViable && shadersActive))
       return; // unsupported
 
    glEnable(GL_POINT_SPRITE);
@@ -883,6 +886,11 @@ void drawInsects()
 void updateScreen()
 {
    SDL_GL_SwapBuffers();
+}
+
+void toggleShaders()
+{
+   shadersActive = !shadersActive;
 }
 
 }

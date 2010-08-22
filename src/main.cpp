@@ -38,11 +38,23 @@
 int main(int argc, char *argv[]) try
 {
    setPath(argv[0]);
+   
+   bool shaders = true;
+   
+   // load tune if argument is given
+   for (int i=1; i<argc; ++i)
+   {
+      const std::string arg = argv[i];
+      if (arg == "--no-shaders")
+         shaders = false;
+      else
+         loadTune(arg);
+   }
 
    class InitAndQuit
    {
       public:
-         InitAndQuit()
+         InitAndQuit(bool shadersOn)
          {
             if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER) != 0)
             {
@@ -50,7 +62,7 @@ int main(int argc, char *argv[]) try
                error << "Failed on SDL_Init: " << SDL_GetError() << "\n";
                throw std::runtime_error(error.str());
             }
-            graphics::setupGraphics();
+            graphics::setupGraphics(shadersOn);
             SDL_WM_SetCaption("Sousaphone Hero", "Sousaphone Hero");
             if(Mix_OpenAudio(AUDIO_RATE, AUDIO_FORMAT, AUDIO_CHANNELS, AUDIO_BUFFERS) != 0)
             {
@@ -73,16 +85,12 @@ int main(int argc, char *argv[]) try
             Mix_CloseAudio();
             SDL_Quit();
          }
-   } iandq;
+   } iandq(shaders);
 
    // load all the notes (to load them)
    getNoteA(); getNoteB(); getNoteC(); getNoteD(); getNoteE(); getNoteF(); getNoteG();
 
    const bool demoMode = false;
-
-   // load tune if argument is given
-   if (argc > 1)
-      loadTune(argv[1]);
 
    double lastNoteFraction = 0;
 

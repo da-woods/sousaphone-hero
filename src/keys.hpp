@@ -77,6 +77,8 @@ inline SDLKey getValve1Key() { return SDLK_a; }
 inline SDLKey getValve2Key() { return SDLK_s; }
 inline SDLKey getValve3Key() { return SDLK_d; }
 
+inline SDLKey getShaderToggleKey() { return SDLK_t; }
+
 // valves can also be controlled by mouse buttons
 inline Uint8 getValve1Button() { return SDL_BUTTON_LEFT; }
 inline Uint8 getValve2Button() { return SDL_BUTTON_MIDDLE; }

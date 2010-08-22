@@ -25,6 +25,7 @@
 #include "general.hpp"
 #include "score.hpp"
 #include "tune.hpp"
+#include "graphics.hpp"
 
 #include <stdexcept>
 #include <map>
@@ -370,6 +371,13 @@ void doIOLoop()
       switch(event.type)
       {
          case(SDL_KEYDOWN):
+         {
+            if (event.key.keysym.sym == getShaderToggleKey())
+            {
+               graphics::toggleShaders();
+               break;
+            }
+         }
          case(SDL_KEYUP): // deal with keyboard events identically
          {
             const bool keydown = (event.type == SDL_KEYDOWN);
