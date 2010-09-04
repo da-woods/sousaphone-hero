@@ -25,6 +25,7 @@
 #include <stdexcept>
 #include <sstream>
 #include <iostream>
+#include <string>
 
 #include "SDL_mixer.h"
 
@@ -144,7 +145,10 @@ Timbre getInstrumentTimbreImpl()
 {
    std::ifstream fin(instrumentTimbreFilename().c_str());
    if (!fin)
-      std::runtime_error(std::string("Failed to load timbre file ") + instrumentTimbreFilename() + "\n");
+   {
+      static const std::string failed ("Failed to load timbre file ");
+      std::runtime_error(failed + instrumentTimbreFilename() + "\n");
+   }
    return Timbre(fin);
 }
 
